@@ -19,42 +19,53 @@
 
         <activity
             android:name=".PictureSelectorActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".PictureSelectorWeChatStyleActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".PictureSelectorCameraEmptyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Picture.Theme.Translucent" />
+            android:theme="@style/Picture.Theme.Translucent"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".PictureCustomCameraActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" />
 
         <activity
             android:name=".PicturePreviewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".PictureSelectorPreviewWeChatStyleActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".PictureVideoPlayActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="sensor" />
+            android:screenOrientation="sensor"
+            android:hardwareAccelerated="true"/>
         <activity
             android:name=".PictureExternalPreviewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" />
 
         <activity
             android:name=".PicturePlayAudioActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true" />
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:theme="@style/Base.Theme.NoActionBar" />
+            android:theme="@style/Base.Theme.NoActionBar"
+            android:hardwareAccelerated="true" />
         <activity
             android:name="com.yalantis.ucrop.PictureMultiCuttingActivity"
-            android:theme="@style/Base.Theme.NoActionBar" />
+            android:theme="@style/Base.Theme.NoActionBar"
+            android:hardwareAccelerated="true" />
 
     </application>
 
