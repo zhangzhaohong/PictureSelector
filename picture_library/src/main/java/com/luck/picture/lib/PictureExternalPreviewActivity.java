@@ -60,9 +60,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author：luck
@@ -72,6 +75,7 @@ import java.util.List;
 public class PictureExternalPreviewActivity extends PictureBaseActivity implements View.OnClickListener {
     private static final int SAVE_IMAGE_ERROR = -1;
     private static final int SAVE_IMAGE_SUCCESSFUL = 0;
+    private static boolean is_first_get = true;
 
     private ImageButton ibLeftBack;
     private TextView tvTitle;
@@ -382,7 +386,45 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
         longImg.setDoubleTapZoomDuration(100);
         longImg.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
         longImg.setDoubleTapZoomDpi(SubsamplingScaleImageView.ZOOM_FOCUS_CENTER);
-        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), 0));
+        is_first_get = true;
+        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), readPicDegree(uri)));
+    }
+
+    private static int readPicDegree(Uri uri) {
+        int degree = 0;
+        int orientation = androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270;
+        if (is_first_get) {
+            is_first_get = false;
+            // 读取图片文件信息的类ExifInterface
+            androidx.exifinterface.media.ExifInterface exif;
+            try {
+                File file = null;   //图片地址
+                try {
+                    file = new File(new URI(uri.toString()));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                exif = new androidx.exifinterface.media.ExifInterface(Objects.requireNonNull(file));
+                orientation = Integer.parseInt(Objects.requireNonNull(exif.getAttribute(androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION)));
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        switch (orientation) {
+            case androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_90:
+                degree = 90;
+                break;
+
+            case androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_180:
+                degree = 180;
+                break;
+
+            case androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270:
+                degree = 270;
+                break;
+        }
+        return degree;
     }
 
     /**

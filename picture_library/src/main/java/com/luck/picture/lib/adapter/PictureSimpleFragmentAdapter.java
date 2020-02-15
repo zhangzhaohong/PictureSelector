@@ -178,23 +178,23 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
      * @param longImg
      */
     private void displayLongPic(Context context, Uri uri, SubsamplingScaleImageView longImg) {
-        is_first_get = true;
         longImg.setQuickScaleEnabled(true);
         longImg.setZoomEnabled(true);
         longImg.setPanEnabled(true);
         longImg.setDoubleTapZoomDuration(100);
         longImg.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
         longImg.setDoubleTapZoomDpi(SubsamplingScaleImageView.ZOOM_FOCUS_CENTER);
-        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), readPicDegree(context, uri)));
+        is_first_get = true;
+        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), readPicDegree(uri)));
     }
 
-    public static int readPicDegree(Context context,Uri uri) {
+    private static int readPicDegree(Uri uri) {
         int degree = 0;
         int orientation = ExifInterface.ORIENTATION_ROTATE_270;
         if (is_first_get) {
             is_first_get = false;
             // 读取图片文件信息的类ExifInterface
-            ExifInterface exif = null;
+            ExifInterface exif;
             try {
                 File file = null;   //图片地址
                 try {
