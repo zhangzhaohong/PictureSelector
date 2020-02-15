@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.RequiresApi;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.viewpager.widget.PagerAdapter;
 
@@ -20,9 +22,12 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.config.PictureSelectionConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.photoview.PhotoView;
+import com.luck.picture.lib.tools.FileUtils;
 import com.luck.picture.lib.tools.JumpUtils;
 import com.luck.picture.lib.tools.MediaUtils;
+import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.tools.SdkVersionUtils;
+import com.luck.picture.lib.tools.ToastUtils;
 import com.luck.picture.lib.widget.longimage.ImageSource;
 import com.luck.picture.lib.widget.longimage.ImageViewState;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
@@ -44,7 +49,6 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     private List<LocalMedia> images;
     private OnCallBackActivity onBackPressed;
     private PictureSelectionConfig config;
-    private static Boolean is_first_get = true;
     /**
      * 最大缓存图片数量
      */
@@ -184,45 +188,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
         longImg.setDoubleTapZoomDuration(100);
         longImg.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
         longImg.setDoubleTapZoomDpi(SubsamplingScaleImageView.ZOOM_FOCUS_CENTER);
-        is_first_get = true;
-        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), readPicDegree(uri)));
-    }
-
-    private static int readPicDegree(Uri uri) {
-        int degree = 0;
-        int orientation = ExifInterface.ORIENTATION_ROTATE_270;
-        if (is_first_get) {
-            is_first_get = false;
-            // 读取图片文件信息的类ExifInterface
-            ExifInterface exif;
-            try {
-                File file = null;   //图片地址
-                try {
-                    file = new File(new URI(uri.toString()));
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-                exif = new ExifInterface(Objects.requireNonNull(file));
-                orientation = Integer.parseInt(Objects.requireNonNull(exif.getAttribute(ExifInterface.TAG_ORIENTATION)));
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        switch (orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                degree = 90;
-                break;
-
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                degree = 180;
-                break;
-
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                degree = 270;
-                break;
-        }
-        return degree;
+        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), PictureFileUtils.readPictureDegree(context, FileUtils.getRealPathFromUri(context, uri))));
     }
 
 }

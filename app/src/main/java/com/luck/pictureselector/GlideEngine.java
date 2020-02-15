@@ -170,7 +170,7 @@ public class GlideEngine implements ImageEngine {
                 .override(180, 180)
                 .centerCrop()
                 .sizeMultiplier(0.5f)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(new RequestOptions().placeholder(R.drawable.picture_image_placeholder))
                 .into(new BitmapImageViewTarget(imageView) {
                     @Override
@@ -214,7 +214,7 @@ public class GlideEngine implements ImageEngine {
                 .load(url)
                 .override(200, 200)
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(new RequestOptions().placeholder(R.drawable.picture_image_placeholder))
                 .into(imageView);
     }
@@ -225,7 +225,7 @@ public class GlideEngine implements ImageEngine {
 
     private static GlideEngine instance;
 
-    public static GlideEngine createGlideEngine() {
+    static GlideEngine createGlideEngine() {
         if (null == instance) {
             synchronized (GlideEngine.class) {
                 if (null == instance) {

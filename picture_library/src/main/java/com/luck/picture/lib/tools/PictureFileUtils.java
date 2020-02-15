@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author：luck
@@ -319,21 +320,23 @@ public class PictureFileUtils {
                 ParcelFileDescriptor parcelFileDescriptor =
                         context.getContentResolver()
                                 .openFileDescriptor(Uri.parse(path), "r");
-                exifInterface = new ExifInterface(parcelFileDescriptor.getFileDescriptor());
+                exifInterface = new ExifInterface(Objects.requireNonNull(parcelFileDescriptor).getFileDescriptor());
             } else {
                 exifInterface = new ExifInterface(path);
             }
-            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    degree = 90;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    degree = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    degree = 270;
-                    break;
+            if (exifInterface.getAttribute(androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION) != null) {
+                int orientation = Integer.parseInt(Objects.requireNonNull(exifInterface.getAttribute(androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION)));
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        degree = 90;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        degree = 180;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        degree = 270;
+                        break;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

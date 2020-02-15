@@ -3,6 +3,7 @@ package com.luck.picture.lib;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -43,6 +44,7 @@ import com.luck.picture.lib.photoview.PhotoView;
 import com.luck.picture.lib.tools.AttrsUtils;
 import com.luck.picture.lib.tools.BitmapUtils;
 import com.luck.picture.lib.tools.DateUtils;
+import com.luck.picture.lib.tools.FileUtils;
 import com.luck.picture.lib.tools.JumpUtils;
 import com.luck.picture.lib.tools.MediaUtils;
 import com.luck.picture.lib.tools.PictureFileUtils;
@@ -75,7 +77,6 @@ import java.util.Objects;
 public class PictureExternalPreviewActivity extends PictureBaseActivity implements View.OnClickListener {
     private static final int SAVE_IMAGE_ERROR = -1;
     private static final int SAVE_IMAGE_SUCCESSFUL = 0;
-    private static boolean is_first_get = true;
 
     private ImageButton ibLeftBack;
     private TextView tvTitle;
@@ -306,7 +307,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                                         });
                             } else {
                                 if (eqLongImg) {
-                                    displayLongPic(isAndroidQ
+                                    displayLongPic(contentView.getContext(), isAndroidQ
                                             ? Uri.parse(path) : Uri.fromFile(new File(path)), longImageView);
                                 } else {
                                     config.imageEngine.loadImage(contentView.getContext(), path, imageView);
@@ -379,52 +380,14 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
      * @param uri
      * @param longImg
      */
-    private void displayLongPic(Uri uri, SubsamplingScaleImageView longImg) {
+    private void displayLongPic(Context context, Uri uri, SubsamplingScaleImageView longImg) {
         longImg.setQuickScaleEnabled(true);
         longImg.setZoomEnabled(true);
         longImg.setPanEnabled(true);
         longImg.setDoubleTapZoomDuration(100);
         longImg.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
         longImg.setDoubleTapZoomDpi(SubsamplingScaleImageView.ZOOM_FOCUS_CENTER);
-        is_first_get = true;
-        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), readPicDegree(uri)));
-    }
-
-    private static int readPicDegree(Uri uri) {
-        int degree = 0;
-        int orientation = androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270;
-        if (is_first_get) {
-            is_first_get = false;
-            // 读取图片文件信息的类ExifInterface
-            androidx.exifinterface.media.ExifInterface exif;
-            try {
-                File file = null;   //图片地址
-                try {
-                    file = new File(new URI(uri.toString()));
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-                exif = new androidx.exifinterface.media.ExifInterface(Objects.requireNonNull(file));
-                orientation = Integer.parseInt(Objects.requireNonNull(exif.getAttribute(androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION)));
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        switch (orientation) {
-            case androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_90:
-                degree = 90;
-                break;
-
-            case androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_180:
-                degree = 180;
-                break;
-
-            case androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270:
-                degree = 270;
-                break;
-        }
-        return degree;
+        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), PictureFileUtils.readPictureDegree(context, FileUtils.getRealPathFromUri(context, uri))));
     }
 
     /**
