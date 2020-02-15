@@ -48,7 +48,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     /**
      * 最大缓存图片数量
      */
-    private static final int MAX_CACHE_SIZE = 0;
+    private static final int MAX_CACHE_SIZE = 20;
     /**
      * 缓存view
      */
