@@ -4,18 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import androidx.annotation.RequiresApi;
-import androidx.exifinterface.media.ExifInterface;
 import androidx.viewpager.widget.PagerAdapter;
-
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -27,17 +22,11 @@ import com.luck.picture.lib.tools.JumpUtils;
 import com.luck.picture.lib.tools.MediaUtils;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.tools.SdkVersionUtils;
-import com.luck.picture.lib.tools.ToastUtils;
 import com.luck.picture.lib.widget.longimage.ImageSource;
 import com.luck.picture.lib.widget.longimage.ImageViewState;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
-
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author：luck
@@ -52,7 +41,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     /**
      * 最大缓存图片数量
      */
-    private static final int MAX_CACHE_SIZE = 20;
+    private static final int MAX_CACHE_SIZE = 0;
     /**
      * 缓存view
      */
@@ -123,6 +112,8 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
                 } else if (media.isCompressed() || (media.isCut() && media.isCompressed())) {
                     // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
                     path = media.getCompressPath();
+                } else if (SdkVersionUtils.checkedAndroid_Q()){
+                    path = media.getAndroidQToPath();
                 } else {
                     path = media.getPath();
                 }
