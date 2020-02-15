@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,7 +20,9 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.luck.picture.lib.engine.ImageEngine;
 import com.luck.picture.lib.listener.ImageCompleteCallback;
+import com.luck.picture.lib.tools.FileUtils;
 import com.luck.picture.lib.tools.MediaUtils;
+import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.widget.longimage.ImageSource;
 import com.luck.picture.lib.widget.longimage.ImageViewState;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
@@ -167,6 +170,7 @@ public class GlideEngine implements ImageEngine {
                 .override(180, 180)
                 .centerCrop()
                 .sizeMultiplier(0.5f)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .apply(new RequestOptions().placeholder(R.drawable.picture_image_placeholder))
                 .into(new BitmapImageViewTarget(imageView) {
                     @Override
@@ -206,12 +210,11 @@ public class GlideEngine implements ImageEngine {
      */
     @Override
     public void loadGridImage(@NonNull Context context, @NonNull String url, @NonNull ImageView imageView) {
-        System.out.println("PIC_URL:" + url);
         Glide.with(context)
                 .load(url)
                 .override(200, 200)
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .apply(new RequestOptions().placeholder(R.drawable.picture_image_placeholder))
                 .into(imageView);
     }

@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -44,6 +45,7 @@ import com.luck.picture.lib.permissions.PermissionChecker;
 import com.luck.picture.lib.style.PictureCropParameterStyle;
 import com.luck.picture.lib.style.PictureParameterStyle;
 import com.luck.picture.lib.style.PictureWindowAnimationStyle;
+import com.luck.picture.lib.tools.FileUtils;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.ToastUtils;
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tv_original_tips.setVisibility(isChecked ? View.VISIBLE : View.GONE));
         cb_choose_mode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             cb_single_back.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-            cb_single_back.setChecked(isChecked ? false : cb_single_back.isChecked());
+            cb_single_back.setChecked(!isChecked && cb_single_back.isChecked());
         });
         mAdapter.setOnItemClickListener((position, v) -> {
             List<LocalMedia> selectList = mAdapter.getData();

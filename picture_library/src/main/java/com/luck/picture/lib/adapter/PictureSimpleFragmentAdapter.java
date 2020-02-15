@@ -1,5 +1,6 @@
 package com.luck.picture.lib.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.exifinterface.media.ExifInterface;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.luck.picture.lib.R;
@@ -26,7 +28,11 @@ import com.luck.picture.lib.widget.longimage.ImageViewState;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author：luck
@@ -38,6 +44,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     private List<LocalMedia> images;
     private OnCallBackActivity onBackPressed;
     private PictureSelectionConfig config;
+    private static Boolean is_first_get = true;
     /**
      * 最大缓存图片数量
      */
@@ -128,7 +135,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
                 } else {
                     if (config != null && config.imageEngine != null) {
                         if (eqLongImg) {
-                            displayLongPic(SdkVersionUtils.checkedAndroid_Q()
+                            displayLongPic(contentView.getContext(), SdkVersionUtils.checkedAndroid_Q()
                                     ? Uri.parse(path) : Uri.fromFile(new File(path)), longImg);
                         } else {
                             config.imageEngine.loadImage
@@ -167,17 +174,55 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
 
     /**
      * 加载长图
-     *
-     * @param uri
+     *  @param uri
      * @param longImg
      */
-    private void displayLongPic(Uri uri, SubsamplingScaleImageView longImg) {
+    private void displayLongPic(Context context, Uri uri, SubsamplingScaleImageView longImg) {
+        is_first_get = true;
         longImg.setQuickScaleEnabled(true);
         longImg.setZoomEnabled(true);
         longImg.setPanEnabled(true);
         longImg.setDoubleTapZoomDuration(100);
         longImg.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
         longImg.setDoubleTapZoomDpi(SubsamplingScaleImageView.ZOOM_FOCUS_CENTER);
-        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), 0));
+        longImg.setImage(ImageSource.uri(uri), new ImageViewState(0, new PointF(0, 0), readPicDegree(context, uri)));
     }
+
+    public static int readPicDegree(Context context,Uri uri) {
+        int degree = 0;
+        int orientation = ExifInterface.ORIENTATION_ROTATE_270;
+        if (is_first_get) {
+            is_first_get = false;
+            // 读取图片文件信息的类ExifInterface
+            ExifInterface exif = null;
+            try {
+                File file = null;   //图片地址
+                try {
+                    file = new File(new URI(uri.toString()));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                exif = new ExifInterface(Objects.requireNonNull(file));
+                orientation = Integer.parseInt(Objects.requireNonNull(exif.getAttribute(ExifInterface.TAG_ORIENTATION)));
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                degree = 90;
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                degree = 180;
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                degree = 270;
+                break;
+        }
+        return degree;
+    }
+
 }
