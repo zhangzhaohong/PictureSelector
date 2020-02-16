@@ -386,7 +386,6 @@ public class PictureFileUtils {
      * set empty PictureSelector Cache
      *
      * @param context
-     * @param type    image、video、audio ...
      */
     public static void deleteAllCacheDirFile(Context context) {
 

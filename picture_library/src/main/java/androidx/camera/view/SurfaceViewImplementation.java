@@ -16,6 +16,7 @@
 
 package androidx.camera.view;
 
+import android.os.Build;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
@@ -24,6 +25,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
 import androidx.camera.core.Preview;
 import androidx.concurrent.futures.CallbackToFutureAdapter;
@@ -48,6 +50,7 @@ final class SurfaceViewImplementation implements PreviewView.Implementation {
 
     private Preview.PreviewSurfaceProvider mPreviewSurfaceProvider =
             new Preview.PreviewSurfaceProvider() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @NonNull
                 @Override
                 public ListenableFuture<Surface> provideSurface(@NonNull Size resolution,
@@ -116,6 +119,7 @@ final class SurfaceViewImplementation implements PreviewView.Implementation {
          * Sets the completer and the size. The completer will only be set if the current size of
          * the Surface matches the target size.
          */
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @UiThread
         void setCompleterAndSize(CallbackToFutureAdapter.Completer<Surface> completer,
                 Size targetSize) {
@@ -165,6 +169,7 @@ final class SurfaceViewImplementation implements PreviewView.Implementation {
             // No-op. Handling surfaceChanged() is enough because it's always called afterwards.
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
             Log.d(TAG, "Surface changed. Size: " + width + "x" + height);

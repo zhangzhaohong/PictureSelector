@@ -80,7 +80,7 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements
                 finish();
                 return;
             }
-            video_path = media.getPath();
+            video_path = media.getRealPath();
         }
         ibLeftBack = findViewById(R.id.picture_left_back);
         mVideoView = findViewById(R.id.video_view);
@@ -120,6 +120,7 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements
 
     @Override
     protected void onDestroy() {
+        mVideoView.stopPlayback();
         mMediaController = null;
         mVideoView = null;
         iv_play = null;

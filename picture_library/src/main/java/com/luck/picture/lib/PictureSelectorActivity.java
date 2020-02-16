@@ -1,6 +1,7 @@
 package com.luck.picture.lib;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -560,6 +561,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
     /**
      * 完成选择
      */
+    @SuppressLint("StringFormatMatches")
     private void onComplete() {
         List<LocalMedia> result = mAdapter.getSelectedImages();
         int size = result.size();
@@ -842,10 +844,14 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
      * @param path
      */
     private void initPlayer(String path) {
-        mediaPlayer = new MediaPlayer();
         try {
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepare();
+            if (mediaPlayer == null) {
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setDataSource(path);
+                mediaPlayer.prepareAsync();
+            } else {
+                stop(path);
+            }
             mediaPlayer.setLooping(true);
             playAudio();
         } catch (Exception e) {
@@ -929,7 +935,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
                 mediaPlayer.stop();
                 mediaPlayer.reset();
                 mediaPlayer.setDataSource(path);
-                mediaPlayer.prepare();
+                mediaPlayer.prepareAsync();
                 mediaPlayer.seekTo(0);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1663,6 +1669,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        PictureFileUtils.deleteAllCacheDirFile(this);
     }
 
     @Override
