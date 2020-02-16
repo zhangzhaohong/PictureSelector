@@ -113,7 +113,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
                     // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
                     path = media.getCompressPath();
                 } else {
-                    path = media.getPath();
+                    path = media.getRealPath();
                 }
                 boolean isGif = PictureMimeType.isGif(mimeType);
                 final boolean eqLongImg = MediaUtils.isLongImg(media);
