@@ -273,7 +273,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                         // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
                         path = media.getCompressPath();
                     } else {
-                        path = media.getRealPath();
+                        path = media.getPath();
                     }
                     boolean isHttp = PictureMimeType.isHttp(path);
                     String mimeType = isHttp ? PictureMimeType.getImageMimeType(media.getPath()) : media.getMimeType();

@@ -18,6 +18,7 @@ import android.widget.VideoView;
 
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.tools.SdkVersionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,11 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements
                 finish();
                 return;
             }
-            video_path = media.getRealPath();
+            if (SdkVersionUtils.checkedAndroid_Q()) {
+                video_path = media.getRealPath();
+            } else {
+                video_path = media.getPath();
+            }
         }
         ibLeftBack = findViewById(R.id.picture_left_back);
         mVideoView = findViewById(R.id.video_view);
