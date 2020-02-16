@@ -324,8 +324,8 @@ public class PictureFileUtils {
             } else {
                 exifInterface = new ExifInterface(path);
             }
-            if (exifInterface.getAttribute(androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION) != null) {
-                int orientation = Integer.parseInt(Objects.requireNonNull(exifInterface.getAttribute(androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION)));
+            if (exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL) != 0) {
+                int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 switch (orientation) {
                     case ExifInterface.ORIENTATION_ROTATE_90:
                         degree = 90;

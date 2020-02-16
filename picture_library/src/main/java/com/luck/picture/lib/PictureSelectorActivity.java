@@ -782,7 +782,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
             musicSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (fromUser == true) {
+                    if (fromUser) {
                         mediaPlayer.seekTo(progress);
                     }
                 }
