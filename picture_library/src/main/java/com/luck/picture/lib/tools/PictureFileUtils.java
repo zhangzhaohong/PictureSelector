@@ -59,7 +59,7 @@ public class PictureFileUtils {
      * 创建文件
      *
      * @param context
-     * @param type
+     * @param chooseMode
      * @param fileName
      * @param format
      * @return
@@ -316,14 +316,15 @@ public class PictureFileUtils {
         int degree = 0;
         try {
             ExifInterface exifInterface;
-            if (SdkVersionUtils.checkedAndroid_Q()) {
+            exifInterface = new ExifInterface(path);
+            /*if (SdkVersionUtils.checkedAndroid_Q()) {
                 ParcelFileDescriptor parcelFileDescriptor =
                         context.getContentResolver()
                                 .openFileDescriptor(Uri.parse(path), "r");
                 exifInterface = new ExifInterface(Objects.requireNonNull(parcelFileDescriptor).getFileDescriptor());
             } else {
                 exifInterface = new ExifInterface(path);
-            }
+            }*/
             if (exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL) != 0) {
                 int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 switch (orientation) {
