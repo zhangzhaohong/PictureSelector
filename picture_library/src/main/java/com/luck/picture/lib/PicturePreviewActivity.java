@@ -1,5 +1,6 @@
 package com.luck.picture.lib;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,9 +14,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 
 import com.luck.picture.lib.adapter.PictureSimpleFragmentAdapter;
 import com.luck.picture.lib.config.PictureConfig;
@@ -34,6 +32,9 @@ import com.yalantis.ucrop.model.CutInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * @author：luck
@@ -604,6 +605,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
 
     }
 
+    @SuppressLint("StringFormatMatches")
     protected void onComplete() {
         // 如果设置了图片最小选择数量，则判断是否满足条件
         int size = selectImages.size();
@@ -640,12 +642,12 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
             // 单选模式(同类型)
             if (config.selectionMode == PictureConfig.MULTIPLE) {
                 if (PictureMimeType.eqImage(mimeType) && config.minSelectNum > 0 && size < config.minSelectNum) {
-                    String str = getString(R.string.picture_min_img_num, config.minSelectNum);
+                    @SuppressLint("StringFormatMatches") String str = getString(R.string.picture_min_img_num, config.minSelectNum);
                     ToastUtils.s(getContext(), str);
                     return;
                 }
                 if (PictureMimeType.eqVideo(mimeType) && config.minVideoSelectNum > 0 && size < config.minVideoSelectNum) {
-                    String str = getString(R.string.picture_min_video_num, config.minVideoSelectNum);
+                    @SuppressLint("StringFormatMatches") String str = getString(R.string.picture_min_video_num, config.minVideoSelectNum);
                     ToastUtils.s(getContext(), str);
                     return;
                 }
@@ -762,6 +764,7 @@ public class PicturePreviewActivity extends PictureBaseActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case UCrop.REQUEST_MULTI_CROP:
