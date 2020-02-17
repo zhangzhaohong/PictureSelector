@@ -35,4 +35,5 @@ dependencies {
     implementation "androidx.exifinterface:exifinterface:${cfgs.androidx_exifinterface_version}"
     implementation "androidx.transition:transition:${cfgs.androidx_transition_version}"
     implementation "androidx.recyclerview:recyclerview:${cfgs.version_recyclerview}"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 }
