@@ -11,14 +11,14 @@ ext {
 
             //open version control
             androidSupportVersion         : "27.0.2",
-            version_recyclerview          : "1.0.0",
+            version_recyclerview          : "1.1.0",
             version_appcompat             : "1.0.0",
 
 
             camerax_version               : "1.0.0-alpha08",
-            camerax_view_version          : "1.0.0-alpha05",
+            camerax_view_version          : "1.0.0-alpha07",
             futures_version               : "1.0.0-rc01",
-            lifecycle_version             : "1.0.0-alpha01",
+            lifecycle_version             : "1.0.0-alpha02",
 
             // ucrop
             androidx_appcompat_version    : "1.1.0",
