@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import androidx.viewpager.widget.PagerAdapter;
+
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -25,8 +25,12 @@ import com.luck.picture.lib.tools.SdkVersionUtils;
 import com.luck.picture.lib.widget.longimage.ImageSource;
 import com.luck.picture.lib.widget.longimage.ImageViewState;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
+
 import java.io.File;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
 
 /**
  * @author：luck
@@ -89,7 +93,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View contentView = mCacheView.get(position);
         if (contentView == null) {
             contentView = LayoutInflater.from(container.getContext())
