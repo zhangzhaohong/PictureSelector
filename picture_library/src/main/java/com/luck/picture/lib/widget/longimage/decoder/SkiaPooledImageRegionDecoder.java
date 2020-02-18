@@ -24,6 +24,7 @@ import java.io.FileFilter;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Semaphore;
@@ -167,7 +168,7 @@ public class SkiaPooledImageRegionDecoder implements ImageRegionDecoder {
                 res = context.getResources();
             } else {
                 PackageManager pm = context.getPackageManager();
-                res = pm.getResourcesForApplication(packageName);
+                res = pm.getResourcesForApplication(Objects.requireNonNull(packageName));
             }
 
             int id = 0;

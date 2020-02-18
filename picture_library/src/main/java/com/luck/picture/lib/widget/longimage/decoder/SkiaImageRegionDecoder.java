@@ -18,6 +18,7 @@ import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -77,7 +78,7 @@ public class SkiaImageRegionDecoder implements ImageRegionDecoder {
                 res = context.getResources();
             } else {
                 PackageManager pm = context.getPackageManager();
-                res = pm.getResourcesForApplication(packageName);
+                res = pm.getResourcesForApplication(Objects.requireNonNull(packageName));
             }
 
             int id = 0;
