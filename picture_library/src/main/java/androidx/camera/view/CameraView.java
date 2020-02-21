@@ -25,6 +25,7 @@ import android.graphics.Paint;
 import android.graphics.SurfaceTexture;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.DisplayManager.DisplayListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,6 +42,11 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+
+import com.luck.picture.lib.R;
+
+import java.io.File;
+import java.util.concurrent.Executor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,11 +68,6 @@ import androidx.camera.core.MeteringPoint;
 import androidx.camera.core.VideoCapture.OnVideoSavedCallback;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.luck.picture.lib.R;
-
-import java.io.File;
-import java.util.concurrent.Executor;
-
 /**
  * A {@link View} that displays a preview of the camera with methods {@link
  * #takePicture(Executor, OnImageCapturedCallback)},
@@ -77,6 +78,7 @@ import java.util.concurrent.Executor;
  * be opened/closed. CameraView will handle opening/closing automatically through use of a {@link
  * LifecycleOwner}. Use {@link #bindToLifecycle(LifecycleOwner)} to start the camera.
  */
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public final class CameraView extends ViewGroup {
     static final String TAG = CameraView.class.getSimpleName();
     static final boolean DEBUG = false;
@@ -264,6 +266,7 @@ public final class CameraView extends ViewGroup {
                 LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     @NonNull
     protected Parcelable onSaveInstanceState() {
@@ -286,6 +289,7 @@ public final class CameraView extends ViewGroup {
         return state;
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onRestoreInstanceState(@Nullable Parcelable savedState) {
         // TODO(b/113884082): Decide what belongs here or what should be invalidated on

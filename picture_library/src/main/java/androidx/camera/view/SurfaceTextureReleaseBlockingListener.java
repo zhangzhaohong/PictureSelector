@@ -16,6 +16,7 @@
 
 package androidx.camera.view;
 
+import android.annotation.SuppressLint;
 import android.graphics.SurfaceTexture;
 import android.view.TextureView;
 
@@ -91,6 +92,7 @@ final class SurfaceTextureReleaseBlockingListener implements TextureView.Surface
      *                                     TextureView.
      * @throws IllegalArgumentException if the same SurfaceTexture is set multiple times.
      */
+    @SuppressLint("RestrictedApi")
     void setSurfaceTextureSafely(@NonNull SurfaceTexture surfaceTexture,
             @NonNull ListenableFuture<Void> surfaceReleaseBlockingFuture) {
         if (mSurfaceTextureCompleterConcurrentHashMap.containsKey(surfaceTexture)) {
@@ -111,7 +113,7 @@ final class SurfaceTextureReleaseBlockingListener implements TextureView.Surface
         // Future should only complete once both safeToRelease completes and
         // onSurfaceTextureDestroyed called from TextureView so it should always release the
         // Surface and SurfaceTexture
-        ListenableFuture<List<Void>> future = Futures.successfulAsList(futureList);
+        @SuppressLint("RestrictedApi") ListenableFuture<List<Void>> future = Futures.successfulAsList(futureList);
         future.addListener(surfaceTexture::release, CameraXExecutors.directExecutor());
 
         mTextureView.setSurfaceTexture(surfaceTexture);

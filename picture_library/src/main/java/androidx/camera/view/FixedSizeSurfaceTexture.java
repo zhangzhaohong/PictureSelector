@@ -62,6 +62,7 @@ final class FixedSizeSurfaceTexture extends SurfaceTexture {
      * @param fixedSize        the fixed default buffer size
      * @throws android.view.Surface.OutOfResourcesException If the SurfaceTexture cannot be created.
      */
+    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
     FixedSizeSurfaceTexture(int texName, boolean singleBufferMode, Size fixedSize) {
         super(texName, singleBufferMode);
         super.setDefaultBufferSize(fixedSize.getWidth(), fixedSize.getHeight());

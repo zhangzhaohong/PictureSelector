@@ -17,10 +17,12 @@
 package androidx.camera.view;
 
 import android.graphics.Matrix;
+import android.os.Build;
 import android.util.Size;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import java.math.BigDecimal;
 
@@ -34,8 +36,9 @@ final class ScaleTypeTransform {
      * @param displayRotation The rotation of the display relative to the source
      * {@link android.view.Surface}
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     static Matrix transformCenterCrop(@NonNull Size resolution, @NonNull View view,
-            int displayRotation) {
+                                      int displayRotation) {
         if (resolution.getWidth() == 0 || resolution.getHeight() == 0) {
             throw new IllegalArgumentException("Input resolution can not be zero sized");
         }
@@ -91,9 +94,10 @@ final class ScaleTypeTransform {
      * @param parentHeight The height of the view that is drawn into.
      * @param displayRotation The rotation of the display relative to the source Surface.
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static Size calculateCenterCropDimension(int sourceWidth, int sourceHeight,
-            int parentWidth,
-            int parentHeight, int displayRotation) {
+                                                     int parentWidth,
+                                                     int parentHeight, int displayRotation) {
         int inWidth = sourceWidth;
         int inHeight = sourceHeight;
         if (displayRotation == 0 || displayRotation == 180) {

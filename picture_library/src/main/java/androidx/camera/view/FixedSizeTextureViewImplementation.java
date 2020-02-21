@@ -16,6 +16,7 @@
 
 package androidx.camera.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
@@ -59,6 +60,7 @@ public class FixedSizeTextureViewImplementation implements PreviewView.Implement
         parent.addView(mTextureView);
     }
 
+    @SuppressLint("RestrictedApi")
     @NonNull
     @Override
     public Preview.PreviewSurfaceProvider getPreviewSurfaceProvider() {

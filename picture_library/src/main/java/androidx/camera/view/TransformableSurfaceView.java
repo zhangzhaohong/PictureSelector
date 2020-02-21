@@ -19,11 +19,13 @@ package androidx.camera.view;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 /**
  * A subclass of {@link SurfaceView} that supports translation and scaling transformations.
@@ -45,8 +47,9 @@ final class TransformableSurfaceView extends SurfaceView {
         super(context, attrs, defStyleAttr);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     TransformableSurfaceView(@NonNull Context context, @Nullable AttributeSet attrs,
-            int defStyleAttr, int defStyleRes) {
+                             int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

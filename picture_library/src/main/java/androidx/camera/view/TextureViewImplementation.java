@@ -16,9 +16,11 @@
 
 package androidx.camera.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
+import android.os.Build;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
@@ -28,6 +30,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.camera.core.Preview;
 import androidx.camera.core.impl.utils.futures.FutureCallback;
 import androidx.camera.core.impl.utils.futures.Futures;
@@ -82,6 +85,7 @@ public class TextureViewImplementation implements PreviewView.Implementation {
              * @param surfaceTexture The {@link SurfaceTexture} about to be destroyed.
              * @return false if the camera is not done with the surface, true otherwise.
              */
+            @SuppressLint("RestrictedApi")
             @Override
             public boolean onSurfaceTextureDestroyed(final SurfaceTexture surfaceTexture) {
                 mSurfaceTexture = null;
@@ -111,6 +115,7 @@ public class TextureViewImplementation implements PreviewView.Implementation {
         parent.addView(mTextureView);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @NonNull
     @Override
     public Preview.PreviewSurfaceProvider getPreviewSurfaceProvider() {
@@ -132,6 +137,7 @@ public class TextureViewImplementation implements PreviewView.Implementation {
         };
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressWarnings("WeakerAccess")
     void tryToProvidePreviewSurface() {
         /*
@@ -163,6 +169,7 @@ public class TextureViewImplementation implements PreviewView.Implementation {
         transformPreview();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void transformPreview() {
         final WindowManager windowManager =
                 (WindowManager) mTextureView.getContext().getSystemService(Context.WINDOW_SERVICE);

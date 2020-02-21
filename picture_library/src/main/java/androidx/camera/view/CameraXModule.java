@@ -21,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
+import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
 import android.util.Rational;
@@ -29,6 +30,7 @@ import android.view.Surface;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.UiThread;
 import androidx.camera.core.AspectRatio;
@@ -76,6 +78,7 @@ import static androidx.camera.core.ImageCapture.FLASH_MODE_OFF;
 /**
  * CameraX use case operation built on @{link androidx.camera.core}.
  */
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 final class CameraXModule {
     public static final String TAG = "CameraXModule";
 
@@ -131,6 +134,7 @@ final class CameraXModule {
     @Nullable
     ProcessCameraProvider mCameraProvider;
 
+    @SuppressLint("RestrictedApi")
     CameraXModule(CameraView view) {
         mCameraViewWeakReference = new WeakReference<>(view);
         Futures.addCallback(ProcessCameraProvider.getInstance(getCameraView().getContext()),
@@ -173,6 +177,7 @@ final class CameraXModule {
         return mCameraViewWeakReference.get();
     }
 
+    @SuppressLint("RestrictedApi")
     @RequiresPermission(permission.CAMERA)
     void bindToLifecycleAfterViewMeasured() {
         if (mNewLifecycle == null) {
@@ -288,6 +293,7 @@ final class CameraXModule {
         // result immediately if it has been set or it will callback once the resolution result
         // is ready.
         Futures.addCallback(resolutionUpdateFuture, new FutureCallback<Size>() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onSuccess(@Nullable Size result) {
                 if (result == null) {
@@ -360,6 +366,7 @@ final class CameraXModule {
         mImageCapture.takePicture(saveLocation, metadata, executor, callback);
     }
 
+    @SuppressLint("RestrictedApi")
     public void startRecording(File file, Executor executor, final OnVideoSavedCallback callback) {
         if (mVideoCapture == null) {
             return;
@@ -424,6 +431,7 @@ final class CameraXModule {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @RequiresPermission(permission.CAMERA)
     public boolean hasCameraWithLensFacing(@CameraSelector.LensFacing int lensFacing) {
         String cameraId;
@@ -580,6 +588,7 @@ final class CameraXModule {
     }
 
     // Update view related information used in use cases
+    @SuppressLint("RestrictedApi")
     private void updateViewInfo() {
         if (mImageCapture != null) {
             mImageCapture.setTargetAspectRatioCustom(new Rational(getWidth(), getHeight()));
@@ -594,7 +603,7 @@ final class CameraXModule {
     @RequiresPermission(permission.CAMERA)
     private Set<Integer> getAvailableCameraLensFacing() {
         // Start with all camera directions
-        Set<Integer> available = new LinkedHashSet<>(Arrays.asList(LensFacingConverter.values()));
+        @SuppressLint("RestrictedApi") Set<Integer> available = new LinkedHashSet<>(Arrays.asList(LensFacingConverter.values()));
 
         // If we're bound to a lifecycle, remove unavailable cameras
         if (mCurrentLifecycle != null) {
