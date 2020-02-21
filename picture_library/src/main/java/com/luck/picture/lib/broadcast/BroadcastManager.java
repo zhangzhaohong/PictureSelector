@@ -9,12 +9,12 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 /**
  * @author：luck
@@ -34,12 +34,10 @@ public class BroadcastManager {
         return broadcastManager;
     }
 
-
     public BroadcastManager intent(Intent intent) {
         this.intent = intent;
         return this;
     }
-
 
     public BroadcastManager action(String action) {
         this.action = action;
@@ -56,7 +54,6 @@ public class BroadcastManager {
         intent.putExtras(bundle);
         return this;
     }
-
 
     public BroadcastManager put(String key, ArrayList<? extends Parcelable> value) {
         createIntent();
@@ -81,7 +78,6 @@ public class BroadcastManager {
         intent.putExtra(key, value);
         return this;
     }
-
 
     public BroadcastManager put(String key, Parcelable value) {
         createIntent();
@@ -155,7 +151,6 @@ public class BroadcastManager {
         return this;
     }
 
-
     public BroadcastManager put(String key, String str) {
         createIntent();
 
@@ -181,7 +176,6 @@ public class BroadcastManager {
         }
     }
 
-
     public void broadcast() {
 
         createIntent();
@@ -201,7 +195,7 @@ public class BroadcastManager {
         }
     }
 
-    public void registerReceiver(BroadcastReceiver br, List<String> actions) {
+    private void registerReceiver(BroadcastReceiver br, List<String> actions) {
         if (null == br || null == actions) {
             return;
         }
@@ -224,27 +218,23 @@ public class BroadcastManager {
         registerReceiver(br, Arrays.asList(actions));
     }
 
-
-    /**
-     * @param br
-     */
-    public void unregisterReceiver(BroadcastReceiver br) {
+    private void unregisterReceiver(BroadcastReceiver br) {
         if (null == br) {
             return;
         }
 
         try {
             localBroadcastManager.unregisterReceiver(br);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
 
     /**
-     * @param br
      * @param actions 至少传入一个
      */
     public void unregisterReceiver(BroadcastReceiver br, @NonNull String... actions) {
         unregisterReceiver(br);
     }
+    
 }
