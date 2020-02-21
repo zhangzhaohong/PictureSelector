@@ -13,9 +13,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -33,6 +30,11 @@ import com.luck.picture.lib.tools.VoiceUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 /**
@@ -48,10 +50,6 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     private List<LocalMedia> images = new ArrayList<>();
     private List<LocalMedia> selectImages = new ArrayList<>();
     private PictureSelectionConfig config;
-    /**
-     * 单选图片
-     */
-    private boolean isGo;
 
     public PictureImageGridAdapter(Context context, PictureSelectionConfig config) {
         this.context = context;
@@ -102,8 +100,9 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == PictureConfig.TYPE_CAMERA) {
             View view = LayoutInflater.from(context).inflate(R.layout.picture_item_camera, parent, false);
             return new HeaderViewHolder(view);
@@ -114,7 +113,7 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         if (getItemViewType(position) == PictureConfig.TYPE_CAMERA) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             headerHolder.headerView.setOnClickListener(v -> {
@@ -161,8 +160,8 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (config.chooseMode == PictureMimeType.ofAudio()) {
                 contentHolder.ivPicture.setImageResource(R.drawable.picture_audio_placeholder);
             } else {
-                if (config.imageEngine != null) {
-                    config.imageEngine.loadGridImage(context, path, contentHolder.ivPicture);
+                if (PictureSelectionConfig.imageEngine != null) {
+                    PictureSelectionConfig.imageEngine.loadGridImage(context, path, contentHolder.ivPicture);
                 }
             }
             if (config.enablePreview || config.enPreviewVideo || config.enablePreviewAudio) {
@@ -170,7 +169,7 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                     // 如原图路径不存在或者路径存在但文件不存在
                     String newPath = SdkVersionUtils.checkedAndroid_Q()
                             ? PictureFileUtils.getPath(context, Uri.parse(path)) : path;
-                    if (!new File(newPath).exists()) {
+                    if (!new File(Objects.requireNonNull(newPath)).exists()) {
                         ToastUtils.s(context, PictureMimeType.s(context, mimeType));
                         return;
                     }
@@ -184,7 +183,7 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                 // 如原图路径不存在或者路径存在但文件不存在
                 String newPath = SdkVersionUtils.checkedAndroid_Q()
                         ? PictureFileUtils.getPath(context, Uri.parse(path)) : path;
-                if (!new File(newPath).exists()) {
+                if (!new File(Objects.requireNonNull(newPath)).exists()) {
                     ToastUtils.s(context, PictureMimeType.s(context, mimeType));
                     return;
                 }
@@ -234,7 +233,7 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
         View headerView;
         TextView tvCamera;
 
-        public HeaderViewHolder(View itemView) {
+        HeaderViewHolder(View itemView) {
             super(itemView);
             headerView = itemView;
             tvCamera = itemView.findViewById(R.id.tvCamera);
@@ -252,7 +251,7 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
         View contentView;
         View btnCheck;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             contentView = itemView;
             ivPicture = itemView.findViewById(R.id.ivPicture);
@@ -269,7 +268,7 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    public boolean isSelected(LocalMedia image) {
+    private boolean isSelected(LocalMedia image) {
         int size = selectImages.size();
         for (int i = 0; i < size; i++) {
             LocalMedia media = selectImages.get(i);
@@ -304,9 +303,6 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     /**
      * 改变图片选中状态
-     *
-     * @param contentHolder
-     * @param image
      */
 
     @SuppressLint("StringFormatMatches")
@@ -446,10 +442,9 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void singleRadioMediaImage() {
         if (selectImages != null
                 && selectImages.size() > 0) {
-            isGo = true;
             LocalMedia media = selectImages.get(0);
             notifyItemChanged(config.isCamera ? media.position :
-                    isGo ? media.position : media.position > 0 ? media.position - 1 : 0);
+                    media.position);
             selectImages.clear();
         }
     }
@@ -460,7 +455,7 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void subSelectPosition() {
         if (config.checkNumMode) {
             int size = selectImages.size();
-            for (int index = 0, length = size; index < length; index++) {
+            for (int index = 0; index < size; index++) {
                 LocalMedia media = selectImages.get(index);
                 media.setNum(index + 1);
                 notifyItemChanged(media.position);
@@ -470,11 +465,8 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     /**
      * 选中的图片并执行动画
-     *
-     * @param holder
-     * @param isChecked
      */
-    public void selectImage(ViewHolder holder, boolean isChecked) {
+    private void selectImage(ViewHolder holder, boolean isChecked) {
         holder.tvCheck.setSelected(isChecked);
         if (isChecked) {
             holder.ivPicture.setColorFilter(ContextCompat.getColor
@@ -493,16 +485,11 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         /**
          * 已选Media回调
-         *
-         * @param selectImages
          */
         void onChange(List<LocalMedia> selectImages);
 
         /**
          * 图片预览回调
-         *
-         * @param media
-         * @param position
          */
         void onPictureClick(LocalMedia media, int position);
     }
@@ -511,6 +498,5 @@ public class PictureImageGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                                                         imageSelectChangedListener) {
         this.imageSelectChangedListener = imageSelectChangedListener;
     }
-
 
 }

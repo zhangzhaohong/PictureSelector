@@ -5,15 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.config.PictureSelectionConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @author：luck
@@ -63,8 +63,8 @@ public class PictureWeChatPreviewGalleryAdapter
         LocalMedia item = getItem(position);
         if (item != null) {
             holder.viewBorder.setVisibility(item.isChecked() ? View.VISIBLE : View.GONE);
-            if (config != null && config.imageEngine != null) {
-                config.imageEngine.loadImage(holder.itemView.getContext(), item.getPath(), holder.ivImage);
+            if (config != null && PictureSelectionConfig.imageEngine != null) {
+                PictureSelectionConfig.imageEngine.loadImage(holder.itemView.getContext(), item.getPath(), holder.ivImage);
             }
 
             holder.itemView.setOnClickListener(v -> {
@@ -83,7 +83,7 @@ public class PictureWeChatPreviewGalleryAdapter
         ImageView ivImage;
         View viewBorder;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.ivImage);
             viewBorder = itemView.findViewById(R.id.viewBorder);
