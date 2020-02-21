@@ -45,7 +45,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     /**
      * 最大缓存图片数量
      */
-    private static final int MAX_CACHE_SIZE = 0;
+    private static final int MAX_CACHE_SIZE = 40;
     /**
      * 缓存view
      */
@@ -80,7 +80,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         (container).removeView((View) object);
         if (mCacheView.size() > MAX_CACHE_SIZE) {
             mCacheView.remove(position);
@@ -88,10 +88,11 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View contentView = mCacheView.get(position);
@@ -125,17 +126,17 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
                 longImg.setVisibility(eqLongImg && !isGif ? View.VISIBLE : View.GONE);
                 // 压缩过的gif就不是gif了
                 if (isGif && !media.isCompressed()) {
-                    if (config != null && config.imageEngine != null) {
-                        config.imageEngine.loadAsGifImage
+                    if (config != null && PictureSelectionConfig.imageEngine != null) {
+                        PictureSelectionConfig.imageEngine.loadAsGifImage
                                 (contentView.getContext(), path, imageView);
                     }
                 } else {
-                    if (config != null && config.imageEngine != null) {
+                    if (config != null && PictureSelectionConfig.imageEngine != null) {
                         if (eqLongImg) {
                             displayLongPic(contentView.getContext(), SdkVersionUtils.checkedAndroid_Q()
                                     ? Uri.parse(path) : Uri.fromFile(new File(path)), longImg);
                         } else {
-                            config.imageEngine.loadImage
+                            PictureSelectionConfig.imageEngine.loadImage
                                     (contentView.getContext(), path, imageView);
                         }
                     }
@@ -151,8 +152,8 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
                     }
                 });
                 ivPlay.setOnClickListener(v -> {
-                    if (config.customVideoPlayCallback != null) {
-                        config.customVideoPlayCallback.startPlayVideo(media);
+                    if (PictureSelectionConfig.customVideoPlayCallback != null) {
+                        PictureSelectionConfig.customVideoPlayCallback.startPlayVideo(media);
                     } else {
                         Intent intent = new Intent();
                         Bundle bundle = new Bundle();
@@ -171,10 +172,8 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
 
     /**
      * 加载长图
-     *  @param uri
-     * @param longImg
      */
-    private void displayLongPic(Context context, Uri uri, SubsamplingScaleImageView longImg) {
+    private void displayLongPic(Context context, Uri uri, @NonNull SubsamplingScaleImageView longImg) {
         longImg.setQuickScaleEnabled(true);
         longImg.setZoomEnabled(true);
         longImg.setPanEnabled(true);
