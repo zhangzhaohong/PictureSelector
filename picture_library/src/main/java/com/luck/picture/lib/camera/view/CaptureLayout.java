@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
@@ -130,6 +131,7 @@ public class CaptureLayout extends FrameLayout {
     }
 
 
+    @SuppressLint("RtlHardcoded")
     private void initView() {
         setWillNotDraw(false);
         //拍照按钮

@@ -236,5 +236,5 @@ public class BroadcastManager {
     public void unregisterReceiver(BroadcastReceiver br, @NonNull String... actions) {
         unregisterReceiver(br);
     }
-    
+
 }

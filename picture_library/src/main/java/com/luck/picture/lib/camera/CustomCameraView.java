@@ -1,10 +1,12 @@
 package com.luck.picture.lib.camera;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -14,15 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.VideoCapture;
-import androidx.camera.view.CameraView;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.luck.picture.lib.PictureMediaScannerConnection;
 import com.luck.picture.lib.R;
@@ -43,6 +36,16 @@ import com.luck.picture.lib.tools.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.camera.core.ImageCapture;
+import androidx.camera.core.VideoCapture;
+import androidx.camera.view.CameraView;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 /**
  * @author：luck
@@ -87,19 +90,23 @@ public class CustomCameraView extends RelativeLayout {
     private File mVideoFile;
     private File mPhotoFile;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public CustomCameraView(Context context) {
         this(context, null);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public CustomCameraView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public CustomCameraView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void initView() {
         setWillNotDraw(false);
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.picture_color_black));
@@ -341,6 +348,8 @@ public class CustomCameraView extends RelativeLayout {
         this.mConfig = config;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("MissingPermission")
     public void setBindToLifecycle(LifecycleOwner lifecycleOwner) {
         mCameraView.bindToLifecycle(lifecycleOwner);
         lifecycleOwner.getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
@@ -375,6 +384,7 @@ public class CustomCameraView extends RelativeLayout {
         this.mImageCallbackListener = mImageCallbackListener;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setFlashRes() {
         switch (type_flash) {
             case TYPE_FLASH_AUTO:
@@ -403,6 +413,7 @@ public class CustomCameraView extends RelativeLayout {
     /**
      * 重置状态
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void resetState() {
         if (mCameraView.getCaptureMode() == androidx.camera.view.CameraView.CaptureMode.VIDEO) {
             if (mCameraView.isRecording()) {
