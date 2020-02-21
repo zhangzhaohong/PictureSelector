@@ -68,6 +68,7 @@ public class PictureSimpleFragmentAdapter extends PagerAdapter {
     public PictureSimpleFragmentAdapter(PictureSelectionConfig config, List<LocalMedia> images,
                                         OnCallBackActivity onBackPressed) {
         super();
+        clear();
         this.config = config;
         this.images = images;
         this.onBackPressed = onBackPressed;
