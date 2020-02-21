@@ -13,9 +13,6 @@ import java.security.MessageDigest;
 public class Digest {
     /**
      * 获取文件MD5值
-     *
-     * @param file
-     * @return
      */
     public static String computeMD5(File file) {
         return compute(file, "MD5");
@@ -23,11 +20,8 @@ public class Digest {
 
     /**
      * 获取文件MD5值
-     *
-     * @param inputStream
-     * @return
      */
-    public static String computeToQMD5(FileInputStream inputStream) {
+    static String computeToQMD5(FileInputStream inputStream) {
         return computeToQ(inputStream, "MD5");
     }
 
@@ -57,9 +51,6 @@ public class Digest {
 
     /**
      * 获取文件MD5值
-     *
-     * @param inputStream
-     * @return
      */
     public static String computeToQMD5(InputStream inputStream) {
         return computeToQ(inputStream, "MD5");

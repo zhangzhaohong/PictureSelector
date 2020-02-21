@@ -324,7 +324,7 @@ public class PictureParameterStyle implements Parcelable {
         dest.writeByte(this.pictureExternalPreviewGonePreviewDelete ? (byte) 1 : (byte) 0);
     }
 
-    protected PictureParameterStyle(Parcel in) {
+    private PictureParameterStyle(Parcel in) {
         this.isChangeStatusBarFontColor = in.readByte() != 0;
         this.isOpenCompletedNumStyle = in.readByte() != 0;
         this.isOpenCheckNumStyle = in.readByte() != 0;

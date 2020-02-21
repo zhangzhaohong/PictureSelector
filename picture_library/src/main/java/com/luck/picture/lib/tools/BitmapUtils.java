@@ -16,10 +16,6 @@ import java.io.FileOutputStream;
 public class BitmapUtils {
     /**
      * 旋转Bitmap
-     *
-     * @param bitmap
-     * @param angle
-     * @return
      */
     public static Bitmap rotatingImage(Bitmap bitmap, int angle) {
         Matrix matrix = new Matrix();
@@ -30,9 +26,6 @@ public class BitmapUtils {
 
     /**
      * 判断拍照 图片是否旋转
-     *
-     * @param degree
-     * @param file
      */
     public static void rotateImage(int degree, String path) {
         if (degree > 0) {
@@ -55,11 +48,8 @@ public class BitmapUtils {
 
     /**
      * 保存Bitmap至本地
-     *
-     * @param bitmap
-     * @param file
      */
-    public static void saveBitmapFile(Bitmap bitmap, File file) {
+    private static void saveBitmapFile(Bitmap bitmap, File file) {
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
@@ -72,9 +62,6 @@ public class BitmapUtils {
 
     /**
      * 获取旋转角度
-     *
-     * @param orientation
-     * @return
      */
     public static int getRotationAngle(int orientation) {
         switch (orientation) {

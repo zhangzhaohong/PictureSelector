@@ -1,5 +1,6 @@
 package com.luck.picture.lib.tools;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,10 +10,12 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
-import androidx.annotation.Nullable;
-
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+
+import java.util.Objects;
+
+import androidx.annotation.Nullable;
 
 
 /**
@@ -23,8 +26,6 @@ import com.luck.picture.lib.entity.LocalMedia;
 public class MediaUtils {
     /**
      * 创建一条图片地址uri,用于保存拍照后的照片
-     *
-     * @param context
      * @return 图片的uri
      */
     @Nullable
@@ -52,8 +53,6 @@ public class MediaUtils {
 
     /**
      * 创建一条视频地址uri,用于保存录制的视频
-     *
-     * @param context
      * @return 视频的uri
      */
     @Nullable
@@ -80,11 +79,6 @@ public class MediaUtils {
 
     /**
      * 获取视频时长
-     *
-     * @param context
-     * @param isAndroidQ
-     * @param path
-     * @return
      */
     public static long extractDuration(Context context, boolean isAndroidQ, String path) {
         return isAndroidQ ? getLocalDuration(context, Uri.parse(path))
@@ -93,8 +87,6 @@ public class MediaUtils {
 
     /**
      * 是否是长图
-     *
-     * @param media
      * @return true 是 or false 不是
      */
     public static boolean isLongImg(LocalMedia media) {
@@ -121,8 +113,6 @@ public class MediaUtils {
 
     /**
      * get Local video duration
-     *
-     * @return
      */
     private static long getLocalDuration(Context context, Uri uri) {
         try {
@@ -138,8 +128,6 @@ public class MediaUtils {
 
     /**
      * get Local video duration
-     *
-     * @return
      */
     private static long getLocalDuration(String path) {
         try {
@@ -155,15 +143,13 @@ public class MediaUtils {
 
     /**
      * get Local video width or height for api 29
-     *
-     * @return
      */
     @Deprecated
     public static int[] getLocalSizeToAndroidQ(Context context, String videoPath) {
         int[] size = new int[2];
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                Cursor query = context.getApplicationContext().getContentResolver().query(Uri.parse(videoPath),
+                @SuppressLint("Recycle") Cursor query = context.getApplicationContext().getContentResolver().query(Uri.parse(videoPath),
                         null, null, null);
                 if (query != null) {
                     query.moveToFirst();
@@ -179,14 +165,12 @@ public class MediaUtils {
 
     /**
      * get Local image width or height for api 29
-     *
-     * @return
      */
     public static int[] getLocalImageSizeToAndroidQ(Context context, String videoPath) {
         int[] size = new int[2];
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                Cursor query = context.getApplicationContext().getContentResolver()
+                @SuppressLint("Recycle") Cursor query = context.getApplicationContext().getContentResolver()
                         .query(Uri.parse(videoPath),
                                 null, null, null);
                 if (query != null) {
@@ -205,8 +189,6 @@ public class MediaUtils {
 
     /**
      * get Local video width or height
-     *
-     * @return
      */
     public static int[] getLocalVideoSize(String videoPath) {
         int[] size = new int[2];
@@ -225,8 +207,6 @@ public class MediaUtils {
 
     /**
      * get Local video width or height
-     *
-     * @return
      */
     public static int[] getLocalVideoSize(Context context, Uri uri) {
         int[] size = new int[2];
@@ -245,8 +225,6 @@ public class MediaUtils {
 
     /**
      * get Local image width or height
-     *
-     * @return
      */
     public static int[] getLocalImageWidthOrHeight(String imagePath) {
         int[] size = new int[2];
@@ -264,8 +242,6 @@ public class MediaUtils {
 
     /**
      * 获取DCIM文件下最新一条拍照记录
-     *
-     * @return
      */
     @Deprecated
     public static int getLastImageId(Context context, String mimeType) {
@@ -282,7 +258,7 @@ public class MediaUtils {
                             MediaStore.Video.Media.EXTERNAL_CONTENT_URI
                             : MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null,
                     selection, selectionArgs, ORDER_BY);
-            if (imageCursor.moveToFirst()) {
+            if (Objects.requireNonNull(imageCursor).moveToFirst()) {
                 int id = imageCursor.getInt(isMimeType ?
                         imageCursor.getColumnIndex(MediaStore.Video.Media._ID)
                         : imageCursor.getColumnIndex(MediaStore.Images.Media._ID));

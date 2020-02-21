@@ -82,7 +82,7 @@ public class PictureCropParameterStyle implements Parcelable {
         dest.writeInt(this.cropNavBarColor);
     }
 
-    protected PictureCropParameterStyle(Parcel in) {
+    private PictureCropParameterStyle(Parcel in) {
         this.isChangeStatusBarFontColor = in.readByte() != 0;
         this.cropTitleBarBackgroundColor = in.readInt();
         this.cropStatusBarColorPrimaryDark = in.readInt();

@@ -20,7 +20,7 @@ public class PictureMediaScannerConnection implements MediaScannerConnection.Med
     private ScanListener mListener;
     private String mimeType;
 
-    public PictureMediaScannerConnection(Context context, String path, ScanListener l) {
+    PictureMediaScannerConnection(Context context, String path, ScanListener l) {
         this.mListener = l;
         this.mPath = path;
         this.mMs = new MediaScannerConnection(context.getApplicationContext(), this);

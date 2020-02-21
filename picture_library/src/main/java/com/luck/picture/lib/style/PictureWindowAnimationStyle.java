@@ -72,9 +72,6 @@ public class PictureWindowAnimationStyle implements Parcelable {
 
     /**
      * 全局所有动画样式
-     *
-     * @param enterAnimation
-     * @param exitAnimation
      */
     public void ofAllAnimation(int enterAnimation, int exitAnimation) {
         this.activityEnterAnimation = enterAnimation;
@@ -103,7 +100,7 @@ public class PictureWindowAnimationStyle implements Parcelable {
         dest.writeInt(this.activityCropExitAnimation);
     }
 
-    protected PictureWindowAnimationStyle(Parcel in) {
+    private PictureWindowAnimationStyle(Parcel in) {
         this.activityEnterAnimation = in.readInt();
         this.activityExitAnimation = in.readInt();
         this.activityPreviewEnterAnimation = in.readInt();

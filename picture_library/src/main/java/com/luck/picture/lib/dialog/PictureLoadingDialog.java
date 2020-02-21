@@ -8,6 +8,8 @@ import android.view.Window;
 
 import com.luck.picture.lib.R;
 
+import java.util.Objects;
+
 public class PictureLoadingDialog extends Dialog {
 
     public PictureLoadingDialog(Context context) {
@@ -15,7 +17,7 @@ public class PictureLoadingDialog extends Dialog {
         setCancelable(true);
         setCanceledOnTouchOutside(false);
         Window window = getWindow();
-        window.setWindowAnimations(R.style.PictureThemeDialogWindowStyle);
+        Objects.requireNonNull(window).setWindowAnimations(R.style.PictureThemeDialogWindowStyle);
     }
 
 

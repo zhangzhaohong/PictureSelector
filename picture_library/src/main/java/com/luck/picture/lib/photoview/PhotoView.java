@@ -15,6 +15,7 @@
  *******************************************************************************/
 package com.luck.picture.lib.photoview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
  * A zoomable {@link ImageView}. See {@link PhotoViewAttacher} for most of the details on how the zooming
  * is accomplished
  */
+@SuppressLint("AppCompatCustomView")
 public class PhotoView extends ImageView {
 
     private PhotoViewAttacher attacher;

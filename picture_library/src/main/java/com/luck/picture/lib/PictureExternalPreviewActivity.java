@@ -31,6 +31,7 @@ import com.luck.picture.lib.broadcast.BroadcastAction;
 import com.luck.picture.lib.broadcast.BroadcastManager;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.config.PictureSelectionConfig;
 import com.luck.picture.lib.dialog.PictureCustomDialog;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.ImageCompleteCallback;
@@ -60,6 +61,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.exifinterface.media.ExifInterface;
@@ -201,7 +203,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
         /**
          * 最大缓存图片数量
          */
-        private static final int MAX_CACHE_SIZE = 0;
+        private static final int MAX_CACHE_SIZE = 40;
         /**
          * 缓存view
          */
@@ -214,13 +216,13 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
             }
         }
 
-        public void removeCacheView(int position) {
+        void removeCacheView(int position) {
             if (mCacheView != null && position < mCacheView.size()) {
                 mCacheView.removeAt(position);
             }
         }
 
-        public SimpleFragmentAdapter() {
+        SimpleFragmentAdapter() {
             super();
             this.mCacheView = new SparseArray<>();
         }
@@ -231,7 +233,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             (container).removeView((View) object);
             if (mCacheView.size() > MAX_CACHE_SIZE) {
                 mCacheView.remove(position);
@@ -244,12 +246,13 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
 
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             View contentView = mCacheView.get(position);
             if (contentView == null) {
                 contentView = LayoutInflater.from(container.getContext())
@@ -282,15 +285,15 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                     longImageView.setVisibility(eqLongImg && !isGif ? View.VISIBLE : View.GONE);
                     // 压缩过的gif就不是gif了
                     if (isGif && !media.isCompressed()) {
-                        if (config != null && config.imageEngine != null) {
-                            config.imageEngine.loadAsGifImage
+                        if (config != null && PictureSelectionConfig.imageEngine != null) {
+                            PictureSelectionConfig.imageEngine.loadAsGifImage
                                     (getContext(), path, imageView);
                         }
                     } else {
-                        if (config != null && config.imageEngine != null) {
+                        if (config != null && PictureSelectionConfig.imageEngine != null) {
                             if (isHttp) {
                                 // 网络图片
-                                config.imageEngine.loadImage(contentView.getContext(), path,
+                                PictureSelectionConfig.imageEngine.loadImage(contentView.getContext(), path,
                                         imageView, longImageView, new ImageCompleteCallback() {
                                             @Override
                                             public void onShowLoading() {
@@ -307,7 +310,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                                     displayLongPic(contentView.getContext(), isAndroidQ
                                             ? Uri.parse(path) : Uri.fromFile(new File(path)), longImageView);
                                 } else {
-                                    config.imageEngine.loadImage(contentView.getContext(), path, imageView);
+                                    PictureSelectionConfig.imageEngine.loadImage(contentView.getContext(), path, imageView);
                                 }
                             }
                         }
@@ -353,8 +356,8 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                         });
                     }
                     ivPlay.setOnClickListener(v -> {
-                        if (config.customVideoPlayCallback != null) {
-                            config.customVideoPlayCallback.startPlayVideo(media);
+                        if (PictureSelectionConfig.customVideoPlayCallback != null) {
+                            PictureSelectionConfig.customVideoPlayCallback.startPlayVideo(media);
                         } else {
                             Intent intent = new Intent();
                             Bundle bundle = new Bundle();
@@ -373,9 +376,6 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
 
     /**
      * 加载长图
-     *
-     * @param uri
-     * @param longImg
      */
     private void displayLongPic(Context context, Uri uri, SubsamplingScaleImageView longImg) {
         longImg.setQuickScaleEnabled(true);
@@ -436,8 +436,6 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
 
     /**
      * 保存相片至本地相册
-     *
-     * @throws Exception
      */
     private void savePictureAlbum() throws Exception {
         String suffix = PictureMimeType.getLastImgSuffix(mMimeType);
@@ -462,8 +460,6 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
 
     /**
      * 保存图片到picture 目录，Android Q适配，最简单的做法就是保存到公共目录，不用SAF存储
-     *
-     * @param inputUri
      */
     private void savePictureAlbumAndroidQ(Uri inputUri) {
         ContentValues contentValues = new ContentValues();
@@ -486,7 +482,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                 opts.inJustDecodeBounds = true;
                 opts.inSampleSize = 2;
                 opts.inJustDecodeBounds = false;
-                Bitmap bitmap = BitmapFactory.decodeFileDescriptor(parcelFileDescriptor.getFileDescriptor(), null, opts);
+                Bitmap bitmap = BitmapFactory.decodeFileDescriptor(Objects.requireNonNull(parcelFileDescriptor).getFileDescriptor(), null, opts);
                 if (bitmap != null) {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N && PictureMimeType.isJPEG(mMimeType)) {
                         ExifInterface exifInterface = new ExifInterface(parcelFileDescriptor.getFileDescriptor());
@@ -527,7 +523,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
     public class LoadDataThread extends Thread {
         private String path;
 
-        public LoadDataThread(String path) {
+        LoadDataThread(String path) {
             super();
             this.path = path;
         }
@@ -545,8 +541,6 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
 
     /**
      * 针对Q版本创建uri
-     *
-     * @return
      */
     private Uri createOutImageUri() {
         ContentValues contentValues = new ContentValues();
@@ -571,7 +565,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                     mHandler.sendEmptyMessage(SAVE_IMAGE_ERROR);
                     return;
                 }
-                bout = new BufferedOutputStream(getContentResolver().openOutputStream(outImageUri));
+                bout = new BufferedOutputStream(Objects.requireNonNull(getContentResolver().openOutputStream(outImageUri)));
                 path = PictureFileUtils.getPath(this, outImageUri);
             } else {
                 String suffix = PictureMimeType.getLastImgSuffix(mMimeType);
@@ -583,7 +577,7 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
                 if (rootDir != null && !rootDir.exists() && rootDir.mkdirs()) {
                 }
                 File folderDir = new File(!state.equals(Environment.MEDIA_MOUNTED)
-                        ? rootDir.getAbsolutePath() : rootDir.getAbsolutePath() + File.separator + "Camera" + File.separator);
+                        ? Objects.requireNonNull(rootDir).getAbsolutePath() : Objects.requireNonNull(rootDir).getAbsolutePath() + File.separator + "Camera" + File.separator);
                 if (folderDir != null && !folderDir.exists() && folderDir.mkdirs()) {
                 }
                 String fileName = DateUtils.getCreateFileName("IMG_") + suffix;
@@ -685,8 +679,8 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
             adapter.clear();
         }
 
-        if (config.customVideoPlayCallback != null) {
-            config.customVideoPlayCallback = null;
+        if (PictureSelectionConfig.customVideoPlayCallback != null) {
+            PictureSelectionConfig.customVideoPlayCallback = null;
         }
     }
 
@@ -696,8 +690,8 @@ public class PictureExternalPreviewActivity extends PictureBaseActivity implemen
         switch (requestCode) {
             case PictureConfig.APPLY_STORAGE_PERMISSIONS_CODE:
                 // 存储权限
-                for (int i = 0; i < grantResults.length; i++) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                for (int grantResult : grantResults) {
+                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
                         showDownLoadDialog();
                     } else {
                         ToastUtils.s(getContext(), getString(R.string.picture_jurisdiction));

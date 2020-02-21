@@ -33,9 +33,6 @@ public class StringUtils {
 
     /**
      * 匹配数值
-     *
-     * @param str
-     * @return
      */
     public static int stringToInt(String str) {
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]+$");
@@ -44,11 +41,6 @@ public class StringUtils {
 
     /**
      * 根据类型获取相应的Toast文案
-     *
-     * @param context
-     * @param mimeType
-     * @param maxSelectNum
-     * @return
      */
     @SuppressLint("StringFormatMatches")
     public static String getMsg(Context context, String mimeType, int maxSelectNum) {
@@ -63,14 +55,11 @@ public class StringUtils {
 
     /**
      * 重命名相册拍照
-     *
-     * @param fileName
-     * @return
      */
     public static String rename(String fileName) {
         String temp = fileName.substring(0, fileName.lastIndexOf("."));
         String suffix = fileName.substring(fileName.lastIndexOf("."));
-        return new StringBuffer().append(temp).append("_").append(DateUtils.getCreateFileName()).append(suffix).toString();
+        return temp + "_" + DateUtils.getCreateFileName() + suffix;
     }
 
     /**
@@ -81,6 +70,6 @@ public class StringUtils {
      */
     public static String renameSuffix(String fileName, String suffix) {
         String temp = fileName.substring(0, fileName.lastIndexOf("."));
-        return new StringBuffer().append(temp).append(suffix).toString();
+        return temp + suffix;
     }
 }

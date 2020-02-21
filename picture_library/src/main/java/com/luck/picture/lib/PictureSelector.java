@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -17,6 +14,10 @@ import com.luck.picture.lib.tools.DoubleUtils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 /**
  * @author：luck
@@ -116,7 +117,7 @@ public final class PictureSelector {
      * @param data
      * @return Put image Intent Data
      */
-    public static Intent putIntentResult(List<LocalMedia> data) {
+    static Intent putIntentResult(List<LocalMedia> data) {
         return new Intent().putParcelableArrayListExtra(PictureConfig.EXTRA_RESULT_SELECTION,
                 (ArrayList<? extends Parcelable>) data);
     }
@@ -125,7 +126,7 @@ public final class PictureSelector {
      * @param bundle
      * @return get Selector  LocalMedia
      */
-    public static List<LocalMedia> obtainSelectorList(Bundle bundle) {
+    static List<LocalMedia> obtainSelectorList(Bundle bundle) {
         if (bundle != null) {
             List<LocalMedia> selectionMedias = bundle.getParcelableArrayList(PictureConfig.EXTRA_SELECT_LIST);
             return selectionMedias == null ? new ArrayList<>() : selectionMedias;
@@ -137,7 +138,7 @@ public final class PictureSelector {
      * @param selectedImages
      * @return put Selector  LocalMedia
      */
-    public static void saveSelectorList(Bundle outState, List<LocalMedia> selectedImages) {
+    static void saveSelectorList(Bundle outState, List<LocalMedia> selectedImages) {
         outState.putParcelableArrayList(PictureConfig.EXTRA_SELECT_LIST,
                 (ArrayList<? extends Parcelable>) selectedImages);
     }
@@ -148,7 +149,7 @@ public final class PictureSelector {
      * @param position
      * @param medias
      */
-    public void externalPicturePreview(int position, List<LocalMedia> medias, int enterAnimation) {
+    void externalPicturePreview(int position, List<LocalMedia> medias, int enterAnimation) {
         if (!DoubleUtils.isFastDoubleClick()) {
             Intent intent = new Intent(getActivity(), PictureExternalPreviewActivity.class);
             intent.putParcelableArrayListExtra(PictureConfig.EXTRA_PREVIEW_SELECT_LIST,
@@ -167,13 +168,13 @@ public final class PictureSelector {
      * @param medias
      * @param directory_path
      */
-    public void externalPicturePreview(int position, String directory_path, List<LocalMedia> medias, int enterAnimation) {
+    void externalPicturePreview(int position, String directory_path, List<LocalMedia> medias, int enterAnimation) {
         if (!DoubleUtils.isFastDoubleClick()) {
             Intent intent = new Intent(getActivity(), PictureExternalPreviewActivity.class);
             intent.putParcelableArrayListExtra(PictureConfig.EXTRA_PREVIEW_SELECT_LIST, (ArrayList<? extends Parcelable>) medias);
             intent.putExtra(PictureConfig.EXTRA_POSITION, position);
             intent.putExtra(PictureConfig.EXTRA_DIRECTORY_PATH, directory_path);
-            getActivity().startActivity(intent);
+            Objects.requireNonNull(getActivity()).startActivity(intent);
             getActivity().overridePendingTransition(enterAnimation != 0
                     ? enterAnimation : R.anim.picture_anim_enter, R.anim.picture_anim_fade_in);
         }
@@ -189,7 +190,7 @@ public final class PictureSelector {
             Intent intent = new Intent(getActivity(), PictureVideoPlayActivity.class);
             intent.putExtra(PictureConfig.EXTRA_VIDEO_PATH, path);
             intent.putExtra(PictureConfig.EXTRA_PREVIEW_VIDEO, true);
-            getActivity().startActivity(intent);
+            Objects.requireNonNull(getActivity()).startActivity(intent);
         }
     }
 
@@ -202,7 +203,7 @@ public final class PictureSelector {
         if (!DoubleUtils.isFastDoubleClick()) {
             Intent intent = new Intent(getActivity(), PicturePlayAudioActivity.class);
             intent.putExtra(PictureConfig.EXTRA_AUDIO_PATH, path);
-            getActivity().startActivity(intent);
+            Objects.requireNonNull(getActivity()).startActivity(intent);
             getActivity().overridePendingTransition(R.anim.picture_anim_enter, 0);
         }
     }

@@ -314,7 +314,7 @@ public class PictureSelectorActivity extends PictureBaseActivity implements View
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (images != null) {
             // 保存当前列表中图片或视频个数

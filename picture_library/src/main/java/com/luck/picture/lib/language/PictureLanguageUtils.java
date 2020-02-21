@@ -1,18 +1,17 @@
 package com.luck.picture.lib.language;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.util.DisplayMetrics;
 
-import androidx.annotation.NonNull;
-
 import com.luck.picture.lib.tools.SPUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
 
 /**
  * @author：luck
@@ -30,9 +29,6 @@ public class PictureLanguageUtils {
 
     /**
      * init app the language
-     *
-     * @param context
-     * @param languageId
      */
     public static void setAppLanguage(Context context, int languageId) {
         WeakReference<Context> contextWeakReference = new WeakReference<>(context);

@@ -7,19 +7,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.camera.core.CameraX;
-import androidx.camera.view.CameraView;
-
 import com.luck.picture.lib.camera.CustomCameraView;
 import com.luck.picture.lib.camera.listener.CameraListener;
 import com.luck.picture.lib.camera.view.CaptureLayout;
 import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureSelectionConfig;
 import com.luck.picture.lib.tools.ToastUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.camera.core.CameraX;
+import androidx.camera.view.CameraView;
 
 /**
  * @author：luck
@@ -54,6 +56,7 @@ public class PictureCustomCameraActivity extends PictureSelectorCameraEmptyActiv
         super.onCreate(savedInstanceState);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void initWidgets() {
         super.initWidgets();
@@ -81,8 +84,8 @@ public class PictureCustomCameraActivity extends PictureSelectorCameraEmptyActiv
         }
         // 拍照预览
         mCameraView.setImageCallbackListener((file, imageView) -> {
-            if (config != null && config.imageEngine != null && file != null) {
-                config.imageEngine.loadImage(getContext(), file.getAbsolutePath(), imageView);
+            if (config != null && PictureSelectionConfig.imageEngine != null && file != null) {
+                PictureSelectionConfig.imageEngine.loadImage(getContext(), file.getAbsolutePath(), imageView);
             }
         });
         // 设置拍照或拍视频回调监听
@@ -119,7 +122,7 @@ public class PictureCustomCameraActivity extends PictureSelectorCameraEmptyActiv
         });
 
         //左边按钮点击事件
-        mCameraView.setOnClickListener(() -> onBackPressed());
+        mCameraView.setOnClickListener(this::onBackPressed);
     }
 
     @Override

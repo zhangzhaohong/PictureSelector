@@ -10,8 +10,6 @@ import android.os.Build;
 public class SdkVersionUtils {
     /**
      * 判断是否是Android Q版本
-     *
-     * @return
      */
     public static boolean checkedAndroid_Q() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;

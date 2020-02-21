@@ -5,7 +5,7 @@
 
     <uses-sdk tools:overrideLibrary="androidx.camera:camera-camera2:1.0.0-alpha08,
     androidx.camera.camera2,androidx.camera.lifecycle,androidx.camera.core" />
-    
+
     <application
         android:requestLegacyExternalStorage="true">
         <provider

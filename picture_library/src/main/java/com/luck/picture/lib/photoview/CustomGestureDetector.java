@@ -92,15 +92,15 @@ class CustomGestureDetector {
         }
     }
 
-    public boolean isScaling() {
+    boolean isScaling() {
         return mDetector.isInProgress();
     }
 
-    public boolean isDragging() {
+    boolean isDragging() {
         return mIsDragging;
     }
 
-    public boolean onTouchEvent(MotionEvent ev) {
+    boolean onTouchEvent(MotionEvent ev) {
         try {
             mDetector.onTouchEvent(ev);
             return processTouchEvent(ev);

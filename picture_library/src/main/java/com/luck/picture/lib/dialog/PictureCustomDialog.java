@@ -9,13 +9,15 @@ import android.view.WindowManager;
 
 import com.luck.picture.lib.R;
 
+import java.util.Objects;
+
 public class PictureCustomDialog extends Dialog {
 
     public PictureCustomDialog(Context context, int layout) {
         super(context, R.style.Picture_Theme_Dialog);
         setContentView(layout);
         Window window = getWindow();
-        WindowManager.LayoutParams params = window.getAttributes();
+        WindowManager.LayoutParams params = Objects.requireNonNull(window).getAttributes();
         params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.gravity = Gravity.CENTER;

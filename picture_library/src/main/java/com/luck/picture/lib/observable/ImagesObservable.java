@@ -28,8 +28,6 @@ public class ImagesObservable {
 
     /**
      * 存储图片用于预览时用
-     *
-     * @param previewList
      */
     public void savePreviewMediaData(List<LocalMedia> previewList) {
         this.previewList = previewList;

@@ -11,13 +11,10 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class DateUtils {
-    private static SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd_HHmmssSS");
+    private static SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd_HHmmssSS", Locale.PRC);
 
     /**
      * 判断两个时间戳相差多少秒
-     *
-     * @param d
-     * @return
      */
     public static int dateDiffer(long d) {
         try {
@@ -32,9 +29,6 @@ public class DateUtils {
 
     /**
      * 时间戳转换成时间格式
-     *
-     * @param duration
-     * @return
      */
     public static String formatDurationTime(long duration) {
         return String.format(Locale.getDefault(), "%02d:%02d",
@@ -46,9 +40,6 @@ public class DateUtils {
 
     /**
      * 根据时间戳创建文件名
-     *
-     * @param prefix 前缀名
-     * @return
      */
     public static String getCreateFileName(String prefix) {
         long millis = System.currentTimeMillis();
@@ -57,20 +48,14 @@ public class DateUtils {
 
     /**
      * 根据时间戳创建文件名
-     *
-     * @return
      */
-    public static String getCreateFileName() {
+    static String getCreateFileName() {
         long millis = System.currentTimeMillis();
         return sf.format(millis);
     }
 
     /**
      * 计算两个时间间隔
-     *
-     * @param sTime
-     * @param eTime
-     * @return
      */
     public static String cdTime(long sTime, long eTime) {
         long diff = eTime - sTime;

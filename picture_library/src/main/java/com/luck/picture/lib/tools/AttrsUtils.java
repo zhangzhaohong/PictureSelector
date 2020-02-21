@@ -15,10 +15,6 @@ public class AttrsUtils {
 
     /**
      * get attrs color
-     *
-     * @param context
-     * @param attr
-     * @return
      */
     public static int getTypeValueColor(Context context, int attr) {
         try {
@@ -36,10 +32,6 @@ public class AttrsUtils {
 
     /**
      * attrs status color or black
-     *
-     * @param context
-     * @param attr
-     * @return
      */
     public static boolean getTypeValueBoolean(Context context, int attr) {
         try {
@@ -57,10 +49,6 @@ public class AttrsUtils {
 
     /**
      * attrs drawable
-     *
-     * @param context
-     * @param attr
-     * @return
      */
     public static Drawable getTypeValueDrawable(Context context, int attr) {
         try {

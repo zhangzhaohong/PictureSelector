@@ -137,7 +137,7 @@ public final class PictureMimeType {
     /**
      * Determine if it is JPG.
      *
-     * @param is image file mimeType
+     * @param mimeType image file mimeType
      */
     public static boolean isJPEG(String mimeType) {
         if (TextUtils.isEmpty(mimeType)) {
@@ -149,7 +149,7 @@ public final class PictureMimeType {
     /**
      * Determine if it is JPG.
      *
-     * @param is image file mimeType
+     * @param mimeType image file mimeType
      */
     public static boolean isJPG(String mimeType) {
         if (TextUtils.isEmpty(mimeType)) {

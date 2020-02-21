@@ -40,9 +40,6 @@ public class AnimUtils {
 
     /**
      * 箭头旋转动画
-     *
-     * @param arrow
-     * @param flag
      */
     public static void rotateArrow(ImageView arrow, boolean flag) {
         float pivotX = arrow.getWidth() / 2f;

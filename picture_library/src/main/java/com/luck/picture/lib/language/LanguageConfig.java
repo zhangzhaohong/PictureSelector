@@ -15,7 +15,9 @@ public class LanguageConfig {
      */
     public static final int TRADITIONAL_CHINESE = 1;
 
-    // 英语
+    /**
+     * 英语
+     */
     public static final int ENGLISH = 2;
 
     /**
@@ -41,6 +43,6 @@ public class LanguageConfig {
     /**
      * 越语
      */
-    public static final int VIETNAM = 7;
+    static final int VIETNAM = 7;
 
 }

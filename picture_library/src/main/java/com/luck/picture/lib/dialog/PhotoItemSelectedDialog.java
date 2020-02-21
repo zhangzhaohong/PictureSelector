@@ -10,14 +10,16 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.luck.picture.lib.R;
+import com.luck.picture.lib.tools.ScreenUtils;
+
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.luck.picture.lib.R;
-import com.luck.picture.lib.tools.ScreenUtils;
 
 /**
  * @author：luck
@@ -30,16 +32,15 @@ public class PhotoItemSelectedDialog extends DialogFragment implements View.OnCl
     private TextView tvPicturePhoto, tvPictureVideo, tvPictureCancel;
 
     public static PhotoItemSelectedDialog newInstance() {
-        PhotoItemSelectedDialog selectedDialog = new PhotoItemSelectedDialog();
-        return selectedDialog;
+        return new PhotoItemSelectedDialog();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Objects.requireNonNull(getDialog()).requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(getDialog().getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         return inflater.inflate(R.layout.picture_dialog_camera_selected, container);
     }
 
@@ -67,7 +68,7 @@ public class PhotoItemSelectedDialog extends DialogFragment implements View.OnCl
         Dialog dialog = getDialog();
         if (dialog != null) {
             Window window = dialog.getWindow();
-            window.setLayout(ScreenUtils.getScreenWidth(getContext()), RelativeLayout.LayoutParams.WRAP_CONTENT);
+            Objects.requireNonNull(window).setLayout(ScreenUtils.getScreenWidth(getContext()), RelativeLayout.LayoutParams.WRAP_CONTENT);
             window.setGravity(Gravity.BOTTOM);
             window.setWindowAnimations(R.style.PictureThemeDialogFragmentAnim);
         }

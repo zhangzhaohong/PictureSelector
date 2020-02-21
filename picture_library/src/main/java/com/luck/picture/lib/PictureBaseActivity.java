@@ -43,6 +43,7 @@ import com.yalantis.ucrop.model.CutInfo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -672,8 +673,8 @@ public abstract class PictureBaseActivity extends AppCompatActivity implements H
                     media.setOriginalPath(media.getPath());
                 }
             }
-            if (config.listener != null) {
-                config.listener.onResult(images);
+            if (PictureSelectionConfig.listener != null) {
+                PictureSelectionConfig.listener.onResult(images);
             } else {
                 Intent intent = PictureSelector.putIntentResult(images);
                 setResult(RESULT_OK, intent);
@@ -811,7 +812,7 @@ public abstract class PictureBaseActivity extends AppCompatActivity implements H
                 Uri uri = data.getData();
                 final String audioPath;
                 if (compare_SDK_19) {
-                    audioPath = uri.getPath();
+                    audioPath = Objects.requireNonNull(uri).getPath();
                 } else {
                     audioPath = getAudioFilePathFromUri(uri);
                 }
@@ -836,7 +837,7 @@ public abstract class PictureBaseActivity extends AppCompatActivity implements H
         try {
             Cursor cursor = getContentResolver()
                     .query(uri, null, null, null, null);
-            cursor.moveToFirst();
+            Objects.requireNonNull(cursor).moveToFirst();
             int index = cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA);
             path = cursor.getString(index);
             cursor.close();
@@ -918,7 +919,7 @@ public abstract class PictureBaseActivity extends AppCompatActivity implements H
                 }
                 File cameraFile = PictureFileUtils.createCameraFile(getApplicationContext(),
                         chooseMode, cameraFileName, config.suffixType);
-                config.cameraPath = cameraFile.getAbsolutePath();
+                config.cameraPath = Objects.requireNonNull(cameraFile).getAbsolutePath();
                 imageUri = PictureFileUtils.parUri(this, cameraFile);
             }
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
@@ -959,8 +960,8 @@ public abstract class PictureBaseActivity extends AppCompatActivity implements H
                             && selectionMedias != null) {
                         images.addAll(images.size() > 0 ? images.size() - 1 : 0, selectionMedias);
                     }
-                    if (config.listener != null) {
-                        config.listener.onResult(images);
+                    if (PictureSelectionConfig.listener != null) {
+                        PictureSelectionConfig.listener.onResult(images);
                     } else {
                         Intent intent = PictureSelector.putIntentResult(images);
                         setResult(RESULT_OK, intent);
@@ -988,8 +989,8 @@ public abstract class PictureBaseActivity extends AppCompatActivity implements H
      */
     private void releaseResultListener() {
         if (config != null) {
-            config.listener = null;
-            config.customVideoPlayCallback = null;
+            PictureSelectionConfig.listener = null;
+            PictureSelectionConfig.customVideoPlayCallback = null;
         }
     }
 

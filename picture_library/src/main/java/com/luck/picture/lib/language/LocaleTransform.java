@@ -7,8 +7,8 @@ import java.util.Locale;
  * @date：2019-11-25 21:58
  * @describe：语言转换
  */
-public class LocaleTransform {
-    public static Locale getLanguage(int language) {
+class LocaleTransform {
+    static Locale getLanguage(int language) {
         switch (language) {
             case LanguageConfig.ENGLISH:
                 // 英语-美国

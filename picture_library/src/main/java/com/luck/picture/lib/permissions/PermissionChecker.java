@@ -1,6 +1,5 @@
 package com.luck.picture.lib.permissions;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -18,10 +17,6 @@ public class PermissionChecker {
 
     /**
      * 检查是否有某个权限
-     *
-     * @param ctx
-     * @param permission
-     * @return
      */
     public static boolean checkSelfPermission(Context ctx, String permission) {
         return ContextCompat.checkSelfPermission(ctx.getApplicationContext(), permission)
@@ -31,9 +26,6 @@ public class PermissionChecker {
 
     /**
      * 动态申请多个权限
-     *
-     * @param activity
-     * @param code
      */
     public static void requestPermissions(Activity activity, @NonNull String[] permissions, int code) {
         ActivityCompat.requestPermissions(activity, permissions, code);

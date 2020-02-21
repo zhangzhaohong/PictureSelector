@@ -17,9 +17,6 @@ import com.luck.picture.lib.PictureVideoPlayActivity;
 public class JumpUtils {
     /**
      * 启动视频播放页面
-     *
-     * @param context
-     * @param bundle
      */
     public static void startPictureVideoPlayActivity(Context context, Bundle bundle, int requestCode) {
         if (!DoubleUtils.isFastDoubleClick()) {
@@ -37,11 +34,6 @@ public class JumpUtils {
 
     /**
      * 启动预览界面
-     *
-     * @param context
-     * @param isWeChatStyle
-     * @param bundle
-     * @param requestCode
      */
     public static void startPicturePreviewActivity(Context context, boolean isWeChatStyle, Bundle bundle, int requestCode) {
         if (!DoubleUtils.isFastDoubleClick()) {

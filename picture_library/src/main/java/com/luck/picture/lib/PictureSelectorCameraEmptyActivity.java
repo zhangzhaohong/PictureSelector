@@ -7,10 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -27,6 +23,11 @@ import com.yalantis.ucrop.UCrop;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 /**
  * @author：luck
@@ -128,7 +129,7 @@ public class PictureSelectorCameraEmptyActivity extends PictureBaseActivity {
                 return;
             }
             Throwable throwable = (Throwable) data.getSerializableExtra(UCrop.EXTRA_ERROR);
-            ToastUtils.s(getContext(), throwable.getMessage());
+            ToastUtils.s(getContext(), Objects.requireNonNull(throwable).getMessage());
         }
     }
 
@@ -143,7 +144,7 @@ public class PictureSelectorCameraEmptyActivity extends PictureBaseActivity {
         }
         List<LocalMedia> medias = new ArrayList<>();
         Uri resultUri = UCrop.getOutput(data);
-        String cutPath = resultUri.getPath();
+        String cutPath = Objects.requireNonNull(resultUri).getPath();
         // 单独拍照
         LocalMedia media = new LocalMedia(config.cameraPath, 0, false,
                 config.isCamera ? 1 : 0, 0, config.chooseMode);
@@ -184,8 +185,10 @@ public class PictureSelectorCameraEmptyActivity extends PictureBaseActivity {
             mimeType = PictureMimeType.MIME_TYPE_AUDIO;
             duration = MediaUtils.extractDuration(getContext(), isAndroidQ, config.cameraPath);
         }
-        if (TextUtils.isEmpty(config.cameraPath) || new File(config.cameraPath) == null) {
+        if (TextUtils.isEmpty(config.cameraPath)) {
             return;
+        } else {
+            new File(config.cameraPath);
         }
         long size = 0;
         int[] newSize = new int[2];

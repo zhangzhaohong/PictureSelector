@@ -1,5 +1,6 @@
 package com.luck.picture.lib.tools;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -35,7 +36,7 @@ public class ScreenUtils {
     public static int getStatusBarHeight(Context context) {
         int statusBarHeight = 0;
         try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
+            @SuppressLint("PrivateApi") Class<?> c = Class.forName("com.android.internal.R$dimen");
             Object o = c.newInstance();
             Field field = c.getField("status_bar_height");
             int x = (Integer) field.get(o);
