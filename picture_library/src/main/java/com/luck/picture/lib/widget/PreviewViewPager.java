@@ -1,5 +1,6 @@
 package com.luck.picture.lib.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -22,6 +23,7 @@ public class PreviewViewPager extends ViewPager {
         super(context, attrs);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         try {
@@ -46,8 +48,7 @@ public class PreviewViewPager extends ViewPager {
     public boolean dispatchTouchEvent(MotionEvent ev) {
         try {
             return super.dispatchTouchEvent(ev);
-        } catch (IllegalArgumentException ignored) {
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException ignored) {
         }
         return false;
     }

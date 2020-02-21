@@ -111,6 +111,11 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements
         // Play Video
         mVideoView.setVideoPath(TextUtils.isEmpty(video_path) ? "" : video_path);
         mVideoView.start();
+        if (null != video_path){
+            if (null != iv_play) {
+                iv_play.setVisibility(View.GONE);
+            }
+        }
         super.onStart();
     }
 
@@ -119,7 +124,9 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements
         // Stop video when the activity is pause.
         mPositionWhenPaused = mVideoView.getCurrentPosition();
         mVideoView.stopPlayback();
-
+        if (null != iv_play) {
+            iv_play.setVisibility(View.GONE);
+        }
         super.onPause();
     }
 
